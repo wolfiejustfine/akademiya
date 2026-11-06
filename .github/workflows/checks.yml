@@ -1,4 +1,4 @@
-name: Проверки
+name: Проверки и публикация
 
 on:
   push:
@@ -11,9 +11,12 @@ permissions:
 
 jobs:
   test-and-package:
-    name: Тесты и комплект для хостинга
+    name: Тесты и подготовка файлов
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: read
     steps:
       - uses: actions/checkout@v7
         with:
@@ -25,3 +28,32 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run package:spaceweb
+      - name: Настройка GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+      - name: Публичные файлы тренажёра
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    name: Публикация тренажёра
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: test-and-package
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Разместить на GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
