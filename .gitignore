@@ -1,0 +1,35 @@
+# Dependencies and local tools
+node_modules/
+.tools/
+.openai/
+artifacts/
+__pycache__/
+*.py[cod]
+
+# Private deployment settings
+.env
+.env.*
+!.env.example
+server/config.php
+**/config.local.php
+private/
+
+# Runtime data and exports
+**/outbox/
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.db
+*.db-*
+*.log
+*.pid
+*.zip
+*.tar.gz
+playwright-report/
+test-results/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

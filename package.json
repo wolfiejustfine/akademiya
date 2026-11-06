@@ -1,0 +1,19 @@
+{
+  "name": "akademiya",
+  "version": "1.0.0",
+  "private": true,
+  "description": "АКАДЕМИЯ — мастерская кириллического набора",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.cjs",
+    "package:spaceweb": "node scripts/package-selfhost.mjs",
+    "package:github": "node scripts/package-github.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  }
+}
